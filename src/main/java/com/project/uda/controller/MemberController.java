@@ -3,27 +3,24 @@ package com.project.uda.controller;
 import com.project.uda.config.JwtTokenProvider;
 import com.project.uda.dto.Message;
 import com.project.uda.entity.Member;
-import com.project.uda.service.MemberService;
+import com.project.uda.service.MemberServiceImpl;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/member")
 @RequiredArgsConstructor
 public class MemberController {
 
-    private final MemberService memberService;
+    private final MemberServiceImpl memberServiceImpl;
     private final JwtTokenProvider jwtTokenProvider;
 
 
     @PostMapping("")
     public ResponseEntity<Message> signupUser(@RequestBody Member member) {
-        memberService.saveMember(member);
+        memberServiceImpl.saveMember(member);
         return ResponseEntity.ok().body(new Message(HttpStatus.OK, "success", true));
     }
 
@@ -33,7 +30,7 @@ public class MemberController {
      * */
     @GetMapping("/check/{info}")
     public ResponseEntity<Message> checkDuplicateInfo(@PathVariable("info") String info) {
-        memberService.checkUserId(info);
+        memberServiceImpl.checkUserId(info);
         return ResponseEntity.ok().body(new Message(HttpStatus.OK, "success", true));
     }
 
@@ -43,7 +40,7 @@ public class MemberController {
      * */
     @PostMapping("/send")
     public ResponseEntity<Message> sendAuthKey(@RequestParam("phone") String phone) {
-        memberService.sendAuthKeyBySms(phone);
+        memberServiceImpl.sendAuthKeyBySms(phone);
         return ResponseEntity.ok().body(new Message(HttpStatus.OK, "success", true));
     }
 
@@ -54,7 +51,7 @@ public class MemberController {
      * */
     @GetMapping("/auth")
     public ResponseEntity<Message> authenticationKey(@RequestParam("key") String key) throws IllegalAccessException {
-        memberService.findByAuthKey(key);
+        memberServiceImpl.findByAuthKey(key);
         return ResponseEntity.ok().body(new Message(HttpStatus.OK, "success", true));
     }
 
