@@ -30,6 +30,9 @@ public class TodoServiceImpl implements TodoService{
         return todoRepository.save(todo);
     }
 
+    /*
+    * Todo 권한 관련 체크 추가
+    * */
     @Override
     @Transactional
     public void deleteTodo(List<Todo> todos) {
