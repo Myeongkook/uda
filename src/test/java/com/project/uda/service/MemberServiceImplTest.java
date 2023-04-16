@@ -12,10 +12,10 @@ import org.springframework.dao.DuplicateKeyException;
 import javax.transaction.Transactional;
 
 @SpringBootTest
-class MemberServiceTest {
+class MemberServiceImplTest {
 
     @Autowired
-    MemberService memberService;
+    MemberServiceImpl memberServiceImpl;
     @Autowired
     MemberRepository memberRepository;
 
@@ -29,7 +29,7 @@ class MemberServiceTest {
                 .phone("010-8489-8972")
                 .userId("myeongkook")
                 .build();
-        memberService.saveMember(member);
+        memberServiceImpl.saveMember(member);
         Assertions.assertThat(memberRepository.findByUserId(member.getUserId()).isPresent()).isTrue();
     }
 
@@ -43,14 +43,14 @@ class MemberServiceTest {
                 .nickname("tester")
                 .build();
         org.junit.jupiter.api.Assertions.assertThrows(DuplicateKeyException.class,
-                ()->memberService.saveMember(sameUser));
+                ()-> memberServiceImpl.saveMember(sameUser));
     }
 
     @Test
     @DisplayName(value = "사용할 수 없는 계정명은 DuplicateKey Exception이 발생한다")
     void member_test03(){
         org.junit.jupiter.api.Assertions.assertThrows(DuplicateKeyException.class,
-                ()->memberService.checkUserId("myeongkook"));
+                ()-> memberServiceImpl.checkUserId("myeongkook"));
     }
 
 }
