@@ -7,6 +7,8 @@ import org.hibernate.annotations.UpdateTimestamp;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -21,8 +23,8 @@ public class Couple {
 
     private LocalDate anniversaryDate;
 
-//    @OneToMany
-//    private List<Todo> todos = new ArrayList<>();
+    @OneToMany(mappedBy = "couple")
+    private List<Todo> todos = new ArrayList<>();
 
     @CreationTimestamp
     private LocalDateTime createdDateTime;

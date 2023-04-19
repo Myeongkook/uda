@@ -35,7 +35,7 @@ public class Member implements UserDetails {
 
     @Column(name = "role")
     @Enumerated(EnumType.STRING)
-    private Role role;
+    private Role role = Role.ROLE_USER;
 
     @ManyToOne
     @JoinColumn(name = "couple_id", referencedColumnName = "id")

@@ -10,12 +10,13 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import java.nio.charset.StandardCharsets;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/member")
 public class MemberController {
+
 
     private final MemberService memberService;
     private final JwtTokenProvider jwtTokenProvider;
@@ -53,22 +54,30 @@ public class MemberController {
         return new ResponseEntity(new Message(HttpStatus.OK, "success", true), httpHeaders, HttpStatus.OK);
     }
 
-    /*
-    * @Param String key : 인증번호
-    *  /send 엔드포인트를 통해 수신된 인증번호를 redis에서 꺼내어 유효성 검사를 한다.
-    * @TO-DO 한 번 인증된 인증번호는 redis 에서 삭제 되어야 한다.
-    * */
+    /**
+     *
+     * @param key
+     * @return
+     * @throws IllegalAccessException
+     */
     @GetMapping("/auth")
     public ResponseEntity authenticationKey(@RequestParam("key")String key) throws IllegalAccessException {
         memberService.findByAuthKey(key);
         return new ResponseEntity(new Message(HttpStatus.OK, "success", true), httpHeaders, HttpStatus.OK);
     }
 
-    @GetMapping("/me")
-    public ResponseEntity getUserInfo(HttpServletRequest request){
-        String token1 = jwtTokenProvider.createToken("0406tester");
-        String token = jwtTokenProvider.resolveRequest(request);
-        return new ResponseEntity(new Message(HttpStatus.OK, "success", token1), httpHeaders, HttpStatus.OK);
+    /**
+     *
+     * @param user
+     * @return
+     */
+    @PostMapping("/login")
+    public ResponseEntity signinUser(@RequestBody Map<String, Object> user){
+        String token = null;
+        if(memberService.validationByUserInfo(user.get("id").toString(), user.get("password").toString())) {
+            token = jwtTokenProvider.createToken(user.get("id").toString());
+        }
+        return new ResponseEntity(new Message(HttpStatus.OK, "success", "Bearer " + token), httpHeaders, HttpStatus.OK);
     }
 
 }
