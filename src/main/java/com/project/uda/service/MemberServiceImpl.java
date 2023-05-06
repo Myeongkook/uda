@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.Duration;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -19,7 +20,6 @@ public class MemberServiceImpl implements MemberService{
 
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
-
     private final RedisDao redisDao;
 
     @Transactional
@@ -43,6 +43,15 @@ public class MemberServiceImpl implements MemberService{
 
     public void findByAuthKey(String key) throws IllegalAccessException {
         if(redisDao.getValues(key) == null)throw new IllegalAccessException("인증에 실패하였습니다.");
+    }
+
+    public boolean validationByUserInfo(String userId, String rawPassword){
+        Optional<Member> byUserId = memberRepository.findByUserId(userId);
+        if(byUserId.isEmpty()){
+            throw new IllegalArgumentException("로그인에 실패하였습니다.");
+        }else {
+            return passwordEncoder.matches(rawPassword, byUserId.get().getPassword());
+        }
     }
 
 }

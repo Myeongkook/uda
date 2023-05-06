@@ -1,6 +1,7 @@
 package com.project.uda.service;
 
 import com.project.uda.entity.Member;
+import com.project.uda.repository.CoupleRepository;
 import com.project.uda.repository.MemberRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -10,6 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DuplicateKeyException;
 
 import javax.transaction.Transactional;
+import java.util.Optional;
 
 @SpringBootTest
 class MemberServiceImplTest {
@@ -18,6 +20,9 @@ class MemberServiceImplTest {
     MemberServiceImpl memberServiceImpl;
     @Autowired
     MemberRepository memberRepository;
+
+    @Autowired
+    CoupleRepository coupleRepository;
 
     @Test
     @DisplayName(value = "회원가입이 완료되어야 한다")
@@ -51,6 +56,12 @@ class MemberServiceImplTest {
     void member_test03(){
         org.junit.jupiter.api.Assertions.assertThrows(DuplicateKeyException.class,
                 ()-> memberServiceImpl.checkUserId("myeongkook"));
+    }
+
+    @Test
+    @DisplayName(value = "커플이 생성될 수 있어야 한다.")
+    void member_test04(){
+
     }
 
 }
