@@ -54,4 +54,16 @@ public class MemberServiceImpl implements MemberService{
         }
     }
 
+    @Override
+    public void deleteMember(String userId) {
+        Optional<Member> userAccount = memberRepository.findByUserId(userId);
+        if(userAccount.isEmpty()){
+            throw new IllegalArgumentException("해당 계정이 존재하지 않습니다.");
+        }else {
+            Member member = userAccount.get();
+            memberRepository.delete(member);
+        }
+    }
+
+
 }

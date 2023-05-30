@@ -9,5 +9,6 @@ public interface MemberService {
     void sendAuthKeyBySms(String phone);
     void findByAuthKey(String key) throws IllegalAccessException;
     boolean validationByUserInfo(String userId, String rawPassword);
+    void deleteMember(String userId);
 
 }

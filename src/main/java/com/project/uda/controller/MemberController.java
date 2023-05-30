@@ -80,4 +80,15 @@ public class MemberController {
         return new ResponseEntity(new Message(HttpStatus.OK, "success", "Bearer " + token), httpHeaders, HttpStatus.OK);
     }
 
+    /**
+     *
+     * @param userId
+     * @return
+     */
+    @PostMapping("/delete")
+    public ResponseEntity deleteUser(@RequestParam("id")String userId){
+        memberService.deleteMember(userId);
+        return new ResponseEntity(new Message(HttpStatus.OK, "success", ""), httpHeaders, HttpStatus.OK);
+    }
+
 }
