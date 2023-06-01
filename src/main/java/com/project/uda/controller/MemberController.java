@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
 import java.util.Map;
 
 @RestController
@@ -26,6 +27,18 @@ public class MemberController {
         this.memberService = memberService;
         this.jwtTokenProvider = jwtTokenProvider;
         this.httpHeaders.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
+    }
+
+    @PostMapping("/get")
+    public ResponseEntity getUserList(@RequestBody String userId){
+
+        return new ResponseEntity(new Message(HttpStatus.OK, "success",
+            memberService.getUserList(new HashMap<String, Object>() {
+                {
+                    put("userId",userId);
+                }
+            })
+        ), httpHeaders, HttpStatus.OK);
     }
 
     @PostMapping("")

@@ -2,6 +2,7 @@ package com.project.uda.service;
 
 import com.project.uda.dao.RedisDao;
 import com.project.uda.entity.Member;
+import com.project.uda.repository.MemberMapperRepository;
 import com.project.uda.repository.MemberRepository;
 import com.project.uda.util.CommonUtil;
 import com.project.uda.util.SmsUtil;
@@ -12,6 +13,8 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.Duration;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -19,8 +22,15 @@ import java.util.Optional;
 public class MemberServiceImpl implements MemberService{
 
     private final MemberRepository memberRepository;
+    private final MemberMapperRepository memberMapper;
     private final PasswordEncoder passwordEncoder;
     private final RedisDao redisDao;
+
+    @Override
+    public List<Member> getUserList (Map<String, Object> paramMap) {
+        List<Member> memberList = memberMapper.getUserList(paramMap);
+        return memberList;
+    }
 
     @Transactional
     public void saveMember(Member member){

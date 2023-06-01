@@ -1,10 +1,7 @@
 package com.project.uda.entity;
 
 import com.project.uda.enums.Role;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.security.core.GrantedAuthority;
@@ -18,8 +15,9 @@ import java.util.Collections;
 
 @Entity
 @Getter
-@NoArgsConstructor
+@Data
 @Builder
+@NoArgsConstructor
 @AllArgsConstructor
 public class Member implements UserDetails {
 
