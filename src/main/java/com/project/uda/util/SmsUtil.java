@@ -2,6 +2,7 @@ package com.project.uda.util;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
+import net.bytebuddy.implementation.bytecode.Throw;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -111,9 +112,10 @@ public class SmsUtil {
             br.close();
             if(responseCode != 202){
                 log.error(response.toString());
+                throw new IllegalArgumentException("전송에 실패하였습니다.");
             }
         } catch (Exception e) {
-            log.error("error : {}", e.getMessage());
+            throw new RuntimeException(e.getMessage());
         }
     }
 }
