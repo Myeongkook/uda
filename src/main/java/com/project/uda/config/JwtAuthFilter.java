@@ -13,6 +13,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Arrays;
 
 @RequiredArgsConstructor
 @Slf4j
@@ -28,8 +29,6 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             if (StringUtils.hasText(token) && provider.validationToken(token)) {
                 Authentication authentication = provider.getAuthentication(token);
                 SecurityContextHolder.getContext().setAuthentication(authentication);
-            }else if(token == null && request.getRequestURI().contains("/member/login")){
-                log.info("Token Generate Process begin");
             }
         } catch (Exception ex) {
             log.error("Authentication Error IP : {} Reason : {}", request.getRemoteAddr(), ex.getMessage());
@@ -38,5 +37,12 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         }
 
         filterChain.doFilter(request, response);
+    }
+
+    //아래 패턴은 필터링 없이 통과
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+        String[] excludePath = {"/oauth", "/member"};
+        return Arrays.stream(excludePath).anyMatch(request.getRequestURI()::contains);
     }
 }
