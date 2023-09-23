@@ -109,6 +109,9 @@ public class SmsUtil {
                 response.append(inputLine);
             }
             br.close();
+            if(responseCode != 202){
+                log.error(response.toString());
+            }
         } catch (Exception e) {
             log.error("error : {}", e.getMessage());
         }
