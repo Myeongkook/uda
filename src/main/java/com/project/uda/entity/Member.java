@@ -1,5 +1,6 @@
 package com.project.uda.entity;
 
+import com.project.uda.enums.AccountType;
 import com.project.uda.enums.Role;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -30,6 +31,10 @@ public class Member implements UserDetails {
     private String password;
     private String phone;
     private String nickname;
+    @Column(name = "type")
+    @Enumerated(EnumType.STRING)
+    private AccountType type = AccountType.GENERAL;
+
 
     @Column(name = "role")
     @Enumerated(EnumType.STRING)
