@@ -1,0 +1,135 @@
+{
+	"info": {
+		"_postman_id": "3e5bf1af-6cc5-4185-99b8-14f28f1d35b4",
+		"name": "Uda",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "18604257"
+	},
+	"item": [
+		{
+			"name": "회원가입(일반유저)",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"userId\":\"park\",\n    \"password\":\"qweqwe1\",\n    \"phone\":\"010-8489-8972\",\n    \"nickname\":\"mk\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/member",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"member"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "계정 중복 확인",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/member/check/park",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"member",
+						"check",
+						"park"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "인증번호 전송",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/member/send?phone=01084898972",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"member",
+						"send"
+					],
+					"query": [
+						{
+							"key": "phone",
+							"value": "01084898972"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "인증번호 검증",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/member/auth?key=782521",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"member",
+						"auth"
+					],
+					"query": [
+						{
+							"key": "key",
+							"value": "782521"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "로그인",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\":\"park\",\n    \"password\":\"qweqwe1\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/member/login",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"member",
+						"login"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
