@@ -5,6 +5,7 @@ import com.project.uda.entity.Member;
 import com.project.uda.repository.MemberMapperRepository;
 import com.project.uda.repository.MemberRepository;
 import com.project.uda.util.CommonUtil;
+import com.project.uda.util.MessageUtils;
 import com.project.uda.util.SmsUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DuplicateKeyException;
@@ -44,11 +45,17 @@ public class MemberServiceImpl implements MemberService{
     }
 
     public void sendAuthKeyBySms(String phone){
-        String generateKey = CommonUtil.generateKey(6);
-        String content = "인증번호는 " + generateKey + "입니다.\n"+
-                         "3분간 유효합니다.";
-        SmsUtil.sendSMS(phone, content);
-        redisDao.setValues(generateKey, phone, Duration.ofMillis(60000 * 3));
+        if(phone.isEmpty()){
+            throw new IllegalArgumentException("연락처는 비어있을 수 없습니다.");
+        }
+        phone = phone.replaceAll("[^0-9]", "");
+        if(phone.startsWith("010") && phone.length() == 11) {
+            String generateKey = CommonUtil.generateKey(6);
+            SmsUtil.sendSMS(phone, MessageUtils.getMessage("phone.send.key", new String[]{generateKey}));
+            redisDao.setValues(generateKey, phone, Duration.ofMillis(60000 * 3));
+        }else {
+            throw new IllegalArgumentException("올바른 연락처가 아닙니다.");
+        }
     }
 
     public void findByAuthKey(String key) throws IllegalAccessException {
