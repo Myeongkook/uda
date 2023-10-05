@@ -15,8 +15,9 @@ public class ExceptionHandlerConfig {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Message> handleException(Exception e) {
         log.error(e.getMessage(), e);
-        Message errorMessage = new Message(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), false);
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+        Message errorMessage = new Message(HttpStatus.BAD_REQUEST, e.getMessage(), false);
+        return ResponseEntity
+                .ok()
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(errorMessage);
     }
