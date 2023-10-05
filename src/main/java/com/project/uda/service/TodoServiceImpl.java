@@ -1,7 +1,9 @@
 package com.project.uda.service;
 
 import com.project.uda.entity.Todo;
+import com.project.uda.repository.CoupleRepository;
 import com.project.uda.repository.TodoRepository;
+import com.project.uda.util.SessionUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +16,7 @@ import java.util.stream.Collectors;
 public class TodoServiceImpl implements TodoService{
 
     private final TodoRepository todoRepository;
+    private final CoupleRepository coupleRepository;
 
 
     /*
@@ -27,6 +30,9 @@ public class TodoServiceImpl implements TodoService{
     @Override
     @Transactional
     public Todo addTodo(Todo todo) {
+        if(todo.getCouple() == null){
+            throw new IllegalArgumentException("커플 정보가 존재하지 않습니다.");
+        }
         return todoRepository.save(todo);
     }
 
@@ -36,7 +42,9 @@ public class TodoServiceImpl implements TodoService{
     @Override
     @Transactional
     public void deleteTodo(List<Todo> todos) {
+        Long coupleId = SessionUtil.getSessionUser().getCouple().getId();
         todoRepository.deleteAllByIdInBatch(todos.stream()
+                .filter(t -> t.getCouple().getId().equals(coupleId))
                 .map(Todo::getId)
                 .collect(Collectors.toList()));
     }
